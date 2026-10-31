@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --python 3.12 --locked
+      - run: uv run ruff check .
+      - run: uv run pytest
+
+  # CLAUDE.md rule 2: protected paths need a human-approved label.
+  protected-paths:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Block unapproved changes to protected paths
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+          APPROVED: ${{ contains(github.event.pull_request.labels.*.name, 'human-approved') }}
+        run: |
+          changed=$(git diff --name-only "$BASE" "$HEAD" | grep -E \
+            '^(src/bot/risk/|src/bot/broker/schwab\.py|\.github/workflows/)' || true)
+          if [ -n "$changed" ] && [ "$APPROVED" != "true" ]; then
+            echo "::error::Protected paths changed without the human-approved label:"
+            echo "$changed"
+            exit 1
+          fi
+          echo "Protected-path check passed."

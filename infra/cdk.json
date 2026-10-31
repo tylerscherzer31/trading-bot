@@ -1,0 +1,7 @@
+{
+  "app": "uv run --group infra python app.py",
+  "watch": { "include": ["**"], "exclude": ["cdk.out"] },
+  "context": {
+    "monthly_budget_usd": 50
+  }
+}

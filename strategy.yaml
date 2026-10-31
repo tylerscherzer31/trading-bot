@@ -1,0 +1,27 @@
+# The ONLY file the weekly review loop may propose changes to (SPEC §6).
+# Guardrails are NOT here: they live in src/bot/risk/ (protected).
+# Strategy stops may be tighter than the -40% guardrail stop, never wider.
+
+version: 1
+instrument: XSP          # XSP | SPY (decided at the Phase 1 gate)
+expiration_dte: 0        # 0 | 1 (1DTE is still closed the same day)
+hypothesis: C0           # H1 | H2 | H3 | C0
+
+entry:
+  no_entry_first_minutes: 15
+  last_entry_time_0dte: "14:30"
+  target_delta: 0.50     # must sit inside the guardrail band 0.40–0.55
+
+exit:
+  take_profit_pct: 0.60  # +60% of premium
+  stop_pct: 0.30         # -30% of premium (tighter than the -40% guardrail)
+  signal_flip_exit: true
+  time_exit: "15:30"     # before the 15:45 guardrail flat-by
+
+c0:
+  seed: 42
+
+h1_noise_area:
+  lookback_days: 14
+  band_multiplier: 1.0
+  check_every_minutes: 30
