@@ -44,7 +44,14 @@ npx aws-cdk@2 deploy BudgetStack -c alert_email=YOU@example.com
 2. Create a label named `human-approved`. Only you apply it.
 3. Don't give automation tokens permission to add labels.
 
-## Next Phase 0 tasks
-- [ ] Token service (Schwabdev auth, DynamoDB/Secrets Manager, T-24h alert)
-- [ ] Live recorder loop → S3 Parquet; DataStack + RecorderStack in CDK
+## Phase 0 checklist
+- [x] Repo, CI, protected-path check, branch protection, Claude Code settings
+- [x] Token service core: expiry health, T-24h alert, Saturday re-auth slot, client factory (`src/bot/auth/`)
+- [x] Recorder loop: chain normalization, delta-band spread/premium metrics, Parquet sink, session runner
+- [x] CDK `DataStack`: private versioned bucket + tokens/state/ledger tables (synth only)
+- [x] H1 noise-area signal (Phase 1 work, pulled forward; needs validation vs the paper)
+- [ ] **Tyler:** deploy `BudgetStack` (needs AWS account + scoped role)
+- [ ] **Waiting on Schwab:** create app → first login → token metadata into DynamoDB/Secrets Manager
+- [ ] Recorder: SPY 1-min bars + index quotes, S3 sink, first live run; `RecorderStack` (Fargate, market hours)
+- [ ] Deploy `DataStack` after reviewing `cdk diff` together
 - [ ] ThetaData backfill once the recorder is running
