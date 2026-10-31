@@ -9,6 +9,7 @@
 
 import aws_cdk as cdk
 from stacks.budget import BudgetStack
+from stacks.data import DataStack
 
 app = cdk.App()
 
@@ -17,10 +18,13 @@ if not email:
     raise SystemExit("Pass -c alert_email=you@example.com")
 limit = float(app.node.try_get_context("monthly_budget_usd") or 50)
 
-BudgetStack(app, "BudgetStack", alert_email=email, monthly_limit_usd=limit)
+budget = BudgetStack(app, "BudgetStack", alert_email=email, monthly_limit_usd=limit)
+
+# Stateful: S3 parquet bucket + DynamoDB (tokens, state, ledger). All RETAIN.
+data = DataStack(app, "DataStack")
+data.add_stack_dependency(budget)  # budget alarm must exist first (CLAUDE.md)
 
 # Next stacks (added one at a time, each after `cdk diff` review):
-#   DataStack     - S3 bucket for parquet, DynamoDB tables (tokens, state, ledger)
 #   RecorderStack - Fargate service on a market-hours schedule
 #   JobsStack     - EventBridge + Lambda for premarket / daily grading / weekly review
 
