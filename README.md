@@ -45,6 +45,7 @@ npx aws-cdk@2 deploy BudgetStack -c alert_email=YOU@example.com
 3. Don't give automation tokens permission to add labels.
 
 ## Next Phase 0 tasks
-- [ ] Token service (Schwabdev auth, DynamoDB/Secrets Manager, T-24h alert)
+- [x] Token service core: expiry health, T-24h alert (6h throttle), weekly Saturday re-auth slot, client factory (`src/bot/auth/`)
+- [ ] Token service in AWS: Secrets Manager/DynamoDB store, Datadog alert, first live login (needs Schwab app)
 - [ ] Live recorder loop → S3 Parquet; DataStack + RecorderStack in CDK
 - [ ] ThetaData backfill once the recorder is running
