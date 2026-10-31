@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(uv sync:*)",
+      "Bash(uv run pytest:*)",
+      "Bash(uv run ruff:*)",
+      "Bash(uv run python -m bot.data.recorder --dry-run:*)",
+      "Bash(uv lock:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git checkout -b:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npx aws-cdk@2 synth:*)",
+      "Bash(npx aws-cdk@2 diff:*)"
+    ],
+    "ask": [
+      "Edit(src/bot/risk/**)",
+      "Write(src/bot/risk/**)",
+      "Edit(src/bot/broker/schwab.py)",
+      "Write(src/bot/broker/schwab.py)",
+      "Edit(.github/workflows/**)",
+      "Write(.github/workflows/**)",
+      "Edit(.claude/settings.json)",
+      "Write(.claude/settings.json)",
+      "Bash(git push:*)",
+      "Bash(npx aws-cdk@2 deploy:*)",
+      "Bash(cdk deploy:*)",
+      "Bash(aws:*)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/tokens.json)",
+      "Read(**/*.token)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(LIVE_TRADING=true:*)",
+      "Bash(export LIVE_TRADING=true:*)",
+      "Bash(npx aws-cdk@2 destroy:*)",
+      "Bash(cdk destroy:*)"
+    ]
+  }
+}

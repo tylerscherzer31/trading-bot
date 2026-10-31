@@ -35,10 +35,16 @@ Automated intraday options bot on Schwab. `SPEC.md` is the source of truth. Read
 - `cdk diff` before every `cdk deploy`; show Tyler the diff for anything that creates or deletes stateful resources (S3, DynamoDB).
 - Budget alarm must exist before other stacks are deployed.
 
-## Commands (fill in as they're created)
-- `uv run pytest`
+## Git workflow
+- `main` is protected: PR required, `test` and `protected-paths` checks must pass, no bypass. Always work on a branch (`feat/…`, `fix/…`, `chore/…`).
+- Ask Tyler before `git push`. Never force-push.
+- `.claude/settings.json` enforces part of these rules (asks before protected-path edits, pushes, deploys; blocks `.env` reads). Don't weaken it without Tyler asking.
+
+## Commands
+- `/next-task` picks up the next Phase checklist item; `/check` runs full verification.
+- `uv run pytest` · `uv run ruff check .`
 - `uv run python -m bot.data.recorder --dry-run`
-- `cd infra && cdk diff`
+- `cd infra && npx aws-cdk@2 diff -c alert_email=...`
 
 ## When unsure
 Ask. Never guess at trading rules, guardrail numbers, or anything that touches money. Guardrail values in SPEC §5 are locked (v0.3); changing them requires a human PR.
