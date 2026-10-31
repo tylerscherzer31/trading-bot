@@ -46,5 +46,6 @@ npx aws-cdk@2 deploy BudgetStack -c alert_email=YOU@example.com
 
 ## Next Phase 0 tasks
 - [ ] Token service (Schwabdev auth, DynamoDB/Secrets Manager, T-24h alert)
-- [ ] Live recorder loop → S3 Parquet; DataStack + RecorderStack in CDK
+- [x] Recorder loop: chain normalization, delta-band spread/premium metrics, partitioned Parquet sink, session loop (half days, skips missed slots, per-symbol fault isolation)
+- [ ] Recorder: SPY 1-min bars + index quotes, S3 sink, first live run (needs Schwab app); RecorderStack in CDK
 - [ ] ThetaData backfill once the recorder is running
